@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -21,10 +21,20 @@ public class MemberController {
         this.memberService = memberService;
     }
 
+    @GetMapping("/members/new")
+    public String createForm() {
+        return "members/createMemberForm";
+    }
+
     @PostMapping("/members/new")
-    public String create(@RequestBody Member member) {
-        memberService.join(member);
-        return "redirect:/";
+    public String create(@ModelAttribute Member member, Model model) {
+        try {
+            memberService.join(member);
+            return "redirect:/";
+        } catch (IllegalStateException e) {
+            model.addAttribute("error", e.getMessage());
+            return "members/createMemberForm";
+        }
     }
 
     @GetMapping("/members")

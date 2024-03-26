@@ -3,10 +3,14 @@ package kr.boot.basic.repository;
 
 import jakarta.persistence.EntityManager;
 import kr.boot.basic.domain.Member;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
+@Primary
 public class JpaMemberRepository implements MemberRepository {
 
     private final EntityManager em;
